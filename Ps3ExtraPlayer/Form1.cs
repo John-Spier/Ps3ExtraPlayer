@@ -6,6 +6,7 @@ namespace Ps3ExtraPlayer
 	public partial class Form1 : Form
 	{
 		public Dictionary<string, string>? Dictionary { get; set; }
+		public List<string> errors { get; set; }
 		public Form1()
 		{
 			InitializeComponent();
@@ -55,18 +56,23 @@ namespace Ps3ExtraPlayer
 			{
 				string fpath = folderBrowserDialog1.SelectedPath;
 				Dictionary ??= [];
+				errors ??= [];
 				string p;
 
+				errors.Add("***Loading from path " + fpath);
 				foreach (string d in Directory.GetFiles(fpath, "PARAM.SFX", SearchOption.AllDirectories))
 				{
-					try { 
+					try
+					{
 						p = ParseOneFile(d);
 						Dictionary.Add(p, Path.GetDirectoryName(d) + "\\DATA000" + Path.GetExtension(p));
 						listView1.Items.Add(p);
 					}
 					catch (Exception ex)
 					{
-						MessageBox.Show(ex.Message);
+						this.Text = "PS3 Extra Player - " + ex.Message;
+						//MessageBox.Show(ex.Message);
+						errors.Add(ex.Message);
 					}
 				}
 
@@ -93,7 +99,7 @@ namespace Ps3ExtraPlayer
 
 		private void listView1_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (!e.Handled) 
+			if (!e.Handled)
 			{
 				switch (e.KeyChar)
 				{
@@ -106,6 +112,17 @@ namespace Ps3ExtraPlayer
 				}
 
 			}
+		}
+
+		private void Form1_DoubleClick(object sender, EventArgs e)
+		{
+			errors ??= [];
+			string er = "";
+			foreach (string error in errors)
+			{
+				er += (error + "\r\n");
+			}
+			MessageBox.Show(er);
 		}
 	}
 }

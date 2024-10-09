@@ -64,6 +64,7 @@
 			Text = "PS3 Extra Player";
 			Click += Form1_Click;
 			DragDrop += Form1_DragDrop;
+			DoubleClick += Form1_DoubleClick;
 			ResumeLayout(false);
 		}
 
