@@ -57,19 +57,19 @@ namespace Ps3ExtraPlayer
 				Dictionary ??= [];
 				string p;
 
-				try
+				foreach (string d in Directory.GetFiles(fpath, "PARAM.SFX", SearchOption.AllDirectories))
 				{
-					foreach (string d in Directory.GetFiles(fpath, "PARAM.SFX", SearchOption.AllDirectories))
-					{
+					try { 
 						p = ParseOneFile(d);
 						Dictionary.Add(p, Path.GetDirectoryName(d) + "\\DATA000" + Path.GetExtension(p));
 						listView1.Items.Add(p);
 					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
 				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message);
-				}
+
 			}
 		}
 
